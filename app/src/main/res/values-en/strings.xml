@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Whisper</string>
+    <string name="bt_state">Bluetooth State</string>
+    <string name="hint_bt_state_off">OFF</string>
+    <string name="hint_bt_state_on">ON</string>
+    <string name="hint_empty_dialog_list">Empty List,\nFind a friend and chat!</string>
+    <string name="img_btn_send_dsc">Press this button to send message</string>
+</resources>

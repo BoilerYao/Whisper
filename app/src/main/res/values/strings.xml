@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">小纸条</string>
+    <string name="img_btn_send_dsc">按下这个按钮将发送消息</string>
+    <string name="bt_state">蓝牙状态</string>
+    <string name="hint_bt_state_off">关</string>
+    <string name="hint_bt_state_on">开</string>
+    <string name="hint_empty_dialog_list">列表空空如也，\n快去找小伙伴玩吧……</string>
+</resources>
