@@ -40,17 +40,11 @@ public class DialogActivity extends AppCompatActivity implements View.OnClickLis
         if (actionBar != null) {
             actionBar.setTitle(getIntent().getStringExtra("name"));
             actionBar.setSubtitle(getIntent().getStringExtra("address"));
+            System.out.println(getIntent().getStringExtra("address"));
         }
         ImageButton send = (ImageButton) findViewById(R.id.send);
         editMessage = (EditText) findViewById(R.id.edit_message);
         send.setOnClickListener(this);
-        adapter.append(new QMessage("Wireshark", 0, QMessage.TYPE_RECEIVED));
-        adapter.append(new QMessage("Uninstall Information", 0, QMessage.TYPE_RECEIVED));
-        adapter.append(new QMessage("Windows Multimedia Platform", 0, QMessage.TYPE_RECEIVED));
-        adapter.append(new QMessage("Typora", 0, QMessage.TYPE_RECEIVED));
-        adapter.append(new QMessage("腾讯游戏", 0, QMessage.TYPE_SENT));
-        adapter.append(new QMessage("Microsoft Office 15", 0, QMessage.TYPE_RECEIVED));
-        adapter.append(new QMessage("nodejs", 0, QMessage.TYPE_SENT));
         new MessageThread().start();
     }
 
@@ -66,7 +60,7 @@ public class DialogActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.send:
                 QMessage msg = new QMessage(editMessage.getText().toString()
-                        , System.currentTimeMillis(), QMessage.TYPE_SENT);
+                        , System.currentTimeMillis(), mService.getLocalAddress());
                 if (mService != null && mService.isAvailable()) {
                     mService.send(msg);
                 }

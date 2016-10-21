@@ -8,6 +8,9 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Build;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -32,6 +35,7 @@ class BluetoothService {
 
     private BluetoothSocket socket;
     private BluetoothServerSocket serverSocket;
+    private Gson gsonGenerater;
 
     /*
     * Constructor Singleton*/
@@ -39,10 +43,7 @@ class BluetoothService {
 //        uuid = UUID.fromString("b5536967-a052-4285-bba3-f2bc21623504");
         uuid = UUID.fromString("b5536967-a052-4285-bba3-f2bc21623504");
         adapter = BluetoothAdapter.getDefaultAdapter();
-        if (adapter == null) {
-            return;
-        }
-
+        gsonGenerater = new GsonBuilder().create();
     }
 
     static BluetoothService getInstance() {
@@ -104,7 +105,7 @@ class BluetoothService {
     void send(QMessage msg) {
         try {
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            out.writeUTF(msg.getContent());
+            out.writeUTF(gsonGenerater.toJson(msg));
             out.flush();
         } catch (IOException e) {
             Log.e(TAG, "Exception on send");
@@ -124,7 +125,7 @@ class BluetoothService {
         } catch (IOException e) {
             Log.e(TAG, "Exception on receive");
         } catch (InterruptedException ignored) {}
-        return new QMessage(content, System.currentTimeMillis(), QMessage.TYPE_RECEIVED);
+        return gsonGenerater.fromJson(content, QMessage.class);
     }
 
     void stop(boolean offBluetooth) {
@@ -141,6 +142,10 @@ class BluetoothService {
         if (offBluetooth) {
             adapter.disable();
         }
+    }
+
+    String getLocalAddress() {
+        return adapter.getAddress();
     }
 
     private void echoState() {

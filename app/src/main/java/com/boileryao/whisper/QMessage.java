@@ -1,22 +1,18 @@
 package com.boileryao.whisper;
 
-import java.io.Serializable;
-
 /**
  * Created by BoilerYao on 2016/3/16.
+ * QMessage, message class of communicate.
  */
-class QMessage implements Serializable{
-    public static final int TYPE_RECEIVED = 0;
-    public static final int TYPE_SENT = 1;
-
+class QMessage {
     private String content;
-    private int type;
+    private String sender;
     private long time;
 
-    QMessage(String content, long time, int type) {
+    QMessage(String content, long time, String sender) {
         this.content = content;
         this.time = time;
-        this.type = type;
+        this.sender = sender;
 
     }
 
@@ -24,8 +20,8 @@ class QMessage implements Serializable{
         return content;
     }
 
-    int getType() {
-        return type;
+    String getSender() {
+        return sender;
     }
 
     long getTime() {

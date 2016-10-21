@@ -16,21 +16,26 @@ import java.util.List;
  */
 
 class MessageListAdapter extends RecyclerView.Adapter {
+    private static final int TYPE_RECEIVED = 233;
+    private static final int TYPE_SENT = 666;
     private List<QMessage> mQMessages = new ArrayList<>();
     private Context mContext;
+    private String id;
 
+    // id is device's bluetooth address
     MessageListAdapter(Context context) {
         mContext = context;
+        id = BluetoothService.getInstance().getLocalAddress();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = null;
         switch (viewType) {
-            case QMessage.TYPE_RECEIVED:
+            case TYPE_RECEIVED:
                 v = LayoutInflater.from(mContext).inflate(R.layout.item_msg_received, parent, false);
                 break;
-            case QMessage.TYPE_SENT:
+            case TYPE_SENT:
                 v = LayoutInflater.from(mContext).inflate(R.layout.item_msg_sent, parent, false);
                 break;
         }
@@ -49,15 +54,20 @@ class MessageListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        return mQMessages.get(position).getType();
+        if (mQMessages.get(position).getSender().equals(id)) {
+            return TYPE_SENT;
+        } else {
+            return TYPE_RECEIVED;
+        }
     }
 
-    public void append(QMessage msg) {
+    void append(QMessage msg) {
         if (msg != null) {
             mQMessages.add(msg);
             this.notifyDataSetChanged();
         }
     }
+
     private static class MsgViewHolder extends RecyclerView.ViewHolder {
         TextView content;
 
